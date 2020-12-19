@@ -23,3 +23,8 @@ resource "digitalocean_droplet" "square_check" {
   #   ]
   # }
 }
+
+# Display output after droplet created
+output "ip" {
+  value = digitalocean_droplet.square_check.ipv4_address
+}
