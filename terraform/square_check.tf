@@ -1,6 +1,6 @@
-resource "digitalocean_droplet" "square_check" {
+resource "digitalocean_droplet" "square-check" {
   image              = "ubuntu-18-04-x64"
-  name               = "square_check"
+  name               = "square-check"
   region             = "sgp1"
   size               = "s-1vcpu-1gb"
   private_networking = true
@@ -14,17 +14,9 @@ resource "digitalocean_droplet" "square_check" {
     private_key = file(var.pvt_key)
     timeout     = "2m"
   }
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "export PATH=$PATH:/usr/bin",
-  #     # Install nginx
-  #     "sudo apt-get update",
-  #     "sudo apt-get -y install nginx"
-  #   ]
-  # }
 }
 
 # Display output after droplet created
 output "ip" {
-  value = digitalocean_droplet.square_check.ipv4_address
+  value = digitalocean_droplet.square-check.ipv4_address
 }

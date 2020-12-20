@@ -1,7 +1,7 @@
 # Configure firewall
-resource "digitalocean_firewall" "square_check-firewall" {
-  name = "square_check-firewall"
-  droplet_ids = [digitalocean_droplet.square_check.id]
+resource "digitalocean_firewall" "square-check-firewall" {
+  name = "square-check-firewall"
+  droplet_ids = [digitalocean_droplet.square-check.id]
 
   inbound_rule {
     protocol = "tcp"
