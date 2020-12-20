@@ -1,0 +1,48 @@
+version: '3.7'
+
+services: 
+  proxy:
+    image: jwilder/nginx-proxy:0.7.0
+    restart: unless-stopped
+    ports: 
+      - "80:80"
+      - "443:443"
+    volumes: 
+      # TODO: Bake new image or Let 'em be
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx-proxy.conf:/etc/nginx/conf.d/nginx-proxy.conf:ro
+
+  api:
+    image: squarecheck/backend:1.0
+    restart: unless-stopped
+    environment: 
+      # TODO: Verify domain name (maybe from terraform)
+      VIRTUAL_HOST: api.square-check.me
+    # TODO: Need better handling
+    env_file: ".env"
+  
+  frontend:
+    image: squarecheck/frontend:1.0
+    restart: unless-stopped
+    environment: 
+      # TODO: Verify domain name (maybe from terraform)
+      VIRTUAL_HOST: www.square-check.me
+
+  db:
+    image: postgres:11.2-alpine
+    restart: on-failure
+    # TODO: Need better import sql
+    volumes: 
+      - postgres-data:/var/lib/postgresql/data
+    environment: 
+      # TODO: Need better handling
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+
+  cache:
+    restart: unless-stopped
+    image: redis:4.0-alpine
+
+volumes:
+  postgres-data:
+    driver: local
