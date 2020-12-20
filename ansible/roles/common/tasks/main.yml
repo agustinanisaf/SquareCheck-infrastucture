@@ -55,6 +55,8 @@
   command: ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
   args:
     creates: /usr/bin/docker-Compose
+  # Command errors out when the docker-compose already exists - ignore
+  ignore_errors: yes
 
 - name: Create Docker network
   command: "docker network create square_check"
@@ -69,6 +71,12 @@
       # Allow deploy to run Docker and Docker Compose
       - docker
 
+- name: Set authorized key taken from file
+  ansible.posix.authorized_key:
+    user: deploy
+    state: present
+    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+
 - name: Create App directory for the deploy user
   file:
     path: /home/deploy/square_check
@@ -78,5 +86,7 @@
 
 - name: Read-write git checkout from github
   git:
-    repo: git@github.com:agustinanisaf/SquareCheck-infrastucture.git
+    repo: 'https://github.com/agustinanisaf/SquareCheck-infrastucture.git'
     dest: /home/deploy/square_check
+  become: yes
+  become_user: deploy

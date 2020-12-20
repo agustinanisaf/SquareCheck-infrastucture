@@ -10,3 +10,5 @@
   shell: docker-compose -f docker-compose.prod.yml up -d
   args:
     chdir: /home/deploy/square_check/docker
+  environment: "{{ db_env }}"
+  register: environment
