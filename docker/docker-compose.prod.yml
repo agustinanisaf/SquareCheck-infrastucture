@@ -13,7 +13,7 @@ services:
       - ./nginx-proxy.conf:/etc/nginx/conf.d/nginx-proxy.conf:ro
 
   api:
-    image: squarecheck-backend:webstack
+    image: squarecheck/backend:1.0
     restart: unless-stopped
     environment: 
       # TODO: Verify domain name (maybe from terraform)
@@ -22,7 +22,7 @@ services:
     env_file: ".env"
   
   frontend:
-    image: squarecheck-frontend:prod
+    image: squarecheck/frontend:1.0
     restart: unless-stopped
     environment: 
       # TODO: Verify domain name (maybe from terraform)
