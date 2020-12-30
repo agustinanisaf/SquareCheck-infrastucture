@@ -3,3 +3,4 @@ backup.sql
 hosts
 all
 retry/
+inventory

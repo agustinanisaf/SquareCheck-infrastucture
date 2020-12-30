@@ -8,20 +8,20 @@ services:
       - 80:80
       - 443:443
     volumes: 
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik.toml:/traefik.toml
       - ./traefik_dynamic.toml:/traefik_dynamic.toml
       - ./acme.json:/acme.json
     networks:
       - square_check
 
-  api:
+  backend:
     image: squarecheck/backend:1.0
     restart: unless-stopped
     labels: 
-      - traefik.http.routers.api.rule=Host(`${api-fqdn}`)
-      - traefik.http.routers.api.tls=true
-      - traefik.http.routers.api.tls.certresolver=lets-encrypt
+      - traefik.http.routers.backend.rule=Host(`${api-fqdn}`)
+      - traefik.http.routers.backend.tls=true
+      - traefik.http.routers.backend.tls.certresolver=lets-encrypt
       - traefik.port=80
     env_file: ".env"
     networks:
@@ -34,14 +34,14 @@ services:
     image: squarecheck/frontend:1.0
     restart: unless-stopped
     labels: 
-      - traefik.http.routers.api.rule=Host(`${www-fqdn}`)
-      - traefik.http.routers.api.tls=true
-      - traefik.http.routers.api.tls.certresolver=lets-encrypt
+      - traefik.http.routers.frontend.rule=Host(`${www-fqdn}`, `${www-domain}`)
+      - traefik.http.routers.frontend.tls=true
+      - traefik.http.routers.frontend.tls.certresolver=lets-encrypt
       - traefik.port=80
     networks:
       - square_check
     depends_on:
-      - api
+      - backend
 
   db:
     image: postgres:11.2-alpine

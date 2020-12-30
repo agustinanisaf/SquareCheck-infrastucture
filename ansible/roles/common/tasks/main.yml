@@ -52,9 +52,10 @@
     mode: '0755'
 
 - name: Add Docker Compose to path
-  command: ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-  args:
-    creates: /usr/bin/docker-Compose
+  file:
+    src: /usr/local/bin/docker-compose
+    dest: /usr/bin/docker-compose
+    state: link
   # Command errors out when the docker-compose already exists - ignore
   ignore_errors: yes
 

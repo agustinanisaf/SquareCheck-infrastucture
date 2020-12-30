@@ -9,6 +9,7 @@ resource "local_file" "docker-configure" {
     {
       api-fqdn = digitalocean_record.api.fqdn
       www-fqdn = digitalocean_record.www.fqdn
+      www-domain = digitalocean_record.www.domain
     }
   )
   filename = "../docker/docker-compose.prod.yml"
