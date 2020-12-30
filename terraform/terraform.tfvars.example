@@ -1,2 +1,9 @@
+## How to get DO Token
+# Get from do account
+# https://www.digitalocean.com/docs/apis-clis/api/create-personal-access-token/
 do_token = ""
+
+## How to get SSH Private Key
+# Use directory to ssh private key 
+# https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/
 pvt_key = ""
