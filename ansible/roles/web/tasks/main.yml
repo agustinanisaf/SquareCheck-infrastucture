@@ -24,7 +24,14 @@
     group: deploy
     mode: '0600'
 
-- name: Run Docker-Compose
-  shell: docker-compose -f docker-compose.prod.yml up -d
+- name: Run docker-compose script
+  script: docker-compose-update.sh
   args:
     chdir: /home/deploy/square_check/docker
+
+- name: Cronjob update docker everyday
+  cron:
+    name: Pull docker image everyday
+    minute: "0"
+    hour: "0"
+    job: "/home/deploy/square_check/docker/docker-compose-update.sh"
