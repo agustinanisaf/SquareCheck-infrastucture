@@ -24,10 +24,13 @@
     group: deploy
     mode: '0600'
 
-- name: Run docker-compose script
-  script: docker-compose-update.sh
-  args:
-    chdir: /home/deploy/square_check/docker
+- name: Copy docker-compose-update script
+  copy:
+    src: docker-compose-update.sh
+    dest: /home/deploy/square_check/docker/docker-compose-update.sh
+    owner: deploy
+    group: deploy
+    mode: '0755'
 
 - name: Cronjob update docker everyday
   cron:
