@@ -16,7 +16,7 @@ services:
       - square_check
 
   backend:
-    image: squarecheck/backend:1.0
+    image: squarecheck/backend:latest
     restart: unless-stopped
     labels: 
       - traefik.http.routers.backend.rule=Host(`api.square-check.me`)
@@ -31,7 +31,7 @@ services:
       - db
   
   frontend:
-    image: squarecheck/frontend:1.0
+    image: squarecheck/frontend:latest
     restart: unless-stopped
     labels: 
       - traefik.http.routers.frontend.rule=Host(`www.square-check.me`, `square-check.me`)
