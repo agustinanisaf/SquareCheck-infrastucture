@@ -24,7 +24,7 @@ $ terraform plan
 $ terraform apply
 ```
 
-To delete your server you can use the below command to do so.
+**To delete your server** you can use the below command to do so.
 
 ```bash
 $ terraform destroy
@@ -42,6 +42,13 @@ Then, copy your `.env` for backend to `roles/web/files/.env` or you could fill u
 ```bash
 $ cp roles/web/files/.env.example roles/web/files/.env
 $ nano .env
+```
+
+Install Ansible Playbook Dependencies
+
+```bash
+$ ansible-galaxy collection install ansible.posix
+$ ansible-galaxy collection install amazon.aws
 ```
 
 Lastly, run the ansible command to configure your server

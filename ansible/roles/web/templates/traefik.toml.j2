@@ -1,3 +1,14 @@
+[log]
+  level = "DEBUG"
+
+[accessLog]
+
+[metrics]
+  [metrics.prometheus]
+    buckets = [0.1,0.3,1.2,5.0]
+
+[tracing]
+
 [entryPoints]
   [entryPoints.web]
     address = ":80"
