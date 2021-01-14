@@ -25,3 +25,10 @@ resource "digitalocean_record" "monitor" {
   name = "monitor"
   value = digitalocean_domain.square-check-domain.ip_address
 }
+
+resource "digitalocean_record" "s3" {
+  domain = digitalocean_domain.square-check-domain.name
+  type = "A"
+  name = "s3"
+  value = digitalocean_domain.square-check-domain.ip_address
+}

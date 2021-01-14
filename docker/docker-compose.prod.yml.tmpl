@@ -65,7 +65,7 @@ services:
   minio:
     image: minio/minio
     labels: 
-      - traefik.http.routers.minio.rule=Host(`s3.square-check.me`)
+      - traefik.http.routers.minio.rule=Host(`${s3-fqdn}`)
       - traefik.http.routers.minio.tls=true
       - traefik.http.routers.minio.tls.certresolver=lets-encrypt
       - traefik.http.services.minio.loadbalancer.server.port=9000
