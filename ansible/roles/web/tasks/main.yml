@@ -23,6 +23,7 @@
     owner: deploy
     group: deploy
     mode: '0600'
+    force: no
 
 - name: Copy docker-compose-update script
   copy:
