@@ -16,12 +16,17 @@ services:
       - square_check
 
   backend:
+    deploy:
+      replicas: 2
     image: squarecheck/backend:latest
-    restart: unless-stopped
+    restart: always
     labels: 
       - traefik.http.routers.backend.rule=Host(`api.square-check.me`)
       - traefik.http.routers.backend.tls=true
       - traefik.http.routers.backend.tls.certresolver=lets-encrypt
+      - traefik.http.services.backend.loadbalancer.healthcheck.path=/
+      - traefik.http.services.backend.loadbalancer.healthcheck.interval=10s
+      - traefik.http.services.backend.loadbalancer.healthcheck.timeout=2s
       - traefik.port=443
       - traefik.docker.network=square_check
     env_file: ".env"
@@ -37,17 +42,35 @@ services:
       - db
   
   frontend:
+    deploy:
+      replicas: 2
     image: squarecheck/frontend:latest
-    restart: unless-stopped
+    restart: always
     labels: 
       - traefik.http.routers.frontend.rule=Host(`www.square-check.me`, `square-check.me`)
       - traefik.http.routers.frontend.tls=true
       - traefik.http.routers.frontend.tls.certresolver=lets-encrypt
+      - traefik.http.services.frontend.loadbalancer.healthcheck.path=/
+      - traefik.http.services.frontend.loadbalancer.healthcheck.interval=10s
+      - traefik.http.services.frontend.loadbalancer.healthcheck.timeout=2s
       - traefik.port=80
+    healthcheck:
+      test: curl http://127.0.0.1 -s -f -o /dev/null || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 3
     networks:
       - square_check
     depends_on:
       - backend
+
+  autoheal:
+    restart: always
+    image: willfarrell/autoheal
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   db:
     image: postgres:11.2-alpine
