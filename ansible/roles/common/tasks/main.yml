@@ -91,10 +91,3 @@
     state: directory
     mode: '0755'
     owner: deploy
-
-- name: Read-write git checkout from github
-  git:
-    repo: 'https://github.com/agustinanisaf/SquareCheck-infrastucture.git'
-    dest: /home/deploy/square_check
-  become: yes
-  become_user: deploy

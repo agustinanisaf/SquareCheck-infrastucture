@@ -1,6 +1,11 @@
 ---
 # This playbook contains web plays that will run docker-compose.
 
+- name: Read-write git checkout from github
+  git:
+    repo: 'https://github.com/agustinanisaf/SquareCheck-infrastucture.git'
+    dest: /home/deploy/square_check
+
 - name: Copy .env for docker-compose
   copy:
     src: .env
@@ -32,6 +37,9 @@
     owner: deploy
     group: deploy
     mode: '0755'
+
+- name: Run docker-compose-update script after upload
+  shell: /bin/sh /home/deploy/square_check/docker/docker-compose-update.sh
 
 - name: Cronjob update docker everyday
   cron:
